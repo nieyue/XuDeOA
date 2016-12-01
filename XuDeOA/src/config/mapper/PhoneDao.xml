@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.nieyue.dao.PhoneDao">
+<!-- 添加手机信息 -->
+<insert id="addPhone" parameterType="Phone" flushCache="true"  >  
+   INSERT IGNORE INTO
+   		phone_tb 
+   		 (type,number,iemi,mac,inventory_situation,create_date,update_date)
+   VALUES
+    	 (#{type},#{number},#{iemi},#{mac},#{inventorySituation},#{createDate},
+    	 #{updateDate})  
+</insert>  
+<!-- 更新手机信息 -->
+<update id="updatePhone" parameterType="Phone" >  
+    UPDATE 
+    	phone_tb 
+    SET 
+    	type=#{type},
+    	number=#{number},
+    	iemi=#{iemi},
+    	mac=#{mac},
+    	inventory_situation=#{inventorySituation},
+    	create_date=#{createDate},
+    	update_date=#{updateDate}
+    WHERE
+    	 phone_id=#{phoneId} 
+</update> 
+<!-- 删除手机信息-->
+<delete id="delPhone"  parameterType="Integer" >  
+    DELETE FROM
+    	 phone_tb 
+    	 WHERE phone_id=#{phoneId}
+</delete>  
+<!-- 加载单个电话信息-->
+<select id="loadPhone" parameterType="Integer" resultType="Phone" >
+SELECT 
+		phone_id,
+	 	type,
+    	number,
+    	iemi,
+    	mac,
+    	inventory_situation,
+    	create_date,
+    	update_date
+FROM phone_tb 
+WHERE phone_id=#{phoneId}
+</select>
+<!-- 根据mac加载单个电话信息-->
+<select id="loadPhoneByMac" parameterType="String" resultType="Phone" >
+SELECT 
+		phone_id,
+	 	type,
+    	number,
+    	iemi,
+    	mac,
+    	inventory_situation,
+    	create_date,
+    	update_date
+FROM phone_tb 
+WHERE mac=#{mac}
+</select>
+<!-- 分页查询手机信息-->
+<select id="browsePagingPhone" resultType="Phone">  
+    SELECT
+	    phone_id,
+	 	type,
+    	number,
+    	iemi,
+    	mac,
+    	inventory_situation,
+    	create_date,
+    	update_date
+	FROM phone_tb
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+
+<!-- 统计记录条数 -->
+<select id="countAll"  resultType="int">  
+	SELECT
+	 	count(phone_id)
+	FROM phone_tb
+</select>   
+   
+ 
+</mapper>

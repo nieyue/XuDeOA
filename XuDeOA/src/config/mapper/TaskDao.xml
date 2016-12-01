@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.nieyue.dao.TaskDao">
+<!-- 添加每日工作 -->
+<insert id="addTask" parameterType="Task" flushCache="true"  >  
+   INSERT IGNORE INTO
+   		  task_tb 
+   		 (name,
+   		 number,
+   		 create_date,
+   		 update_date,
+   		 base_number,
+   		 am_number,
+   		 am_total_number,
+   		 pm_number,
+   		 pm_total_number,
+   		 night_number,
+   		 night_total_number,
+   		 day_total_number,
+   		 day_retain_number,
+   		 admin_id)
+   VALUES
+    	 (#{name},
+    	 #{number},
+    	 #{createDate},
+    	 #{updateDate},
+    	 #{baseNumber},
+    	 #{amNumber},
+    	 #{amTotalNumber},
+    	 #{pmNumber},
+    	 #{pmTotalNumber},
+    	 #{nightNumber},
+    	 #{nightTotalNumber},
+    	 #{dayTotalNumber},
+    	 #{dayRetainNumber},
+    	 #{adminId})  
+</insert>  
+<!-- 更新每日工作 -->
+<update id="updateTask" parameterType="Task" >  
+    UPDATE 
+    	task_tb 
+    SET 
+    	name=#{name},
+    	number=#{number},
+    	create_date=#{createDate},
+    	update_date=#{updateDate},
+    	base_number=#{baseNumber},
+    	am_number=#{amNumber},
+    	am_total_number=#{amTotalNumber},
+    	pm_number=#{pmNumber},
+    	pm_total_number=#{pmTotalNumber},
+    	night_number=#{nightNumber},
+    	night_total_number=#{nightTotalNumber},
+    	day_total_number=#{dayTotalNumber},
+    	day_retain_number=#{dayRetainNumber},
+    	admin_id=#{adminId}
+    WHERE
+    	 task_id=#{taskId} 
+</update> 
+<!-- 删除每日工作-->
+<delete id="delTask"  parameterType="Integer" >  
+    DELETE FROM
+    	 task_tb 
+    	 WHERE task_id=#{taskId}
+</delete>  
+<!-- 加载每日工作-->
+<select id="loadTask" parameterType="Integer" resultType="Task" >
+SELECT 
+		 task_id,
+	 	 name,
+   		 number,
+   		 create_date,
+   		 update_date,
+   		 base_number,
+   		 am_number,
+   		 am_total_number,
+   		 pm_number,
+   		 pm_total_number,
+   		 night_number,
+   		 night_total_number,
+   		 day_total_number,
+   		 day_retain_number,
+   		 admin_id
+FROM task_tb 
+WHERE task_id=#{taskId}
+</select>
+
+<!-- 分页查询每日工作-->
+<select id="browsePagingTask" resultType="Task">  
+    SELECT
+	     task_id,
+	 	 name,
+   		 number,
+   		 create_date,
+   		 update_date,
+   		 base_number,
+   		 am_number,
+   		 am_total_number,
+   		 pm_number,
+   		 pm_total_number,
+   		 night_number,
+   		 night_total_number,
+   		 day_total_number,
+   		 day_retain_number,
+   		 admin_id
+	FROM task_tb
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+
+<!-- 统计记录条数 -->
+<select id="countAll"  resultType="int">  
+	SELECT
+	 	count(task_id)
+	FROM task_tb
+</select>   
+   
+ 
+</mapper>

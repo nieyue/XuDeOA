@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.nieyue.dao.TemporaryWorkDao">
+<!-- 添加临时工作 -->
+<insert id="addTemporaryWork" parameterType="TemporaryWork" flushCache="true"  >  
+   INSERT IGNORE INTO
+   		  temporary_work_tb 
+   		 (phone_number,
+   		 workers,
+   		 task,
+   		 task_situation,
+   		 create_date,
+   		 update_date)
+   VALUES
+    	 (#{phoneNumber},
+    	 #{workers},
+    	 #{task},
+    	 #{taskSituation},
+    	 #{createDate},
+    	 #{updateDate})  
+</insert>  
+<!-- 更新临时工作 -->
+<update id="updateTemporaryWork" parameterType="TemporaryWork" >  
+    UPDATE 
+    	temporary_work_tb 
+    SET 
+    	phone_number=#{phoneNumber},
+    	workers=#{workers},
+    	task=#{task},
+    	task_situation=#{taskSituation},
+    	create_date=#{createDate},
+    	update_date=#{updateDate}
+    WHERE
+    	 temporary_work_id=#{temporaryWorkId} 
+</update> 
+<!-- 删除临时工作-->
+<delete id="delTemporaryWork"  parameterType="Integer" >  
+    DELETE FROM
+    	 temporary_work_tb 
+    	 WHERE temporary_work_id=#{temporaryWorkId}
+</delete>  
+<!-- 加载临时工作-->
+<select id="loadTemporaryWork" parameterType="Integer" resultType="TemporaryWork" >
+SELECT 
+		 temporary_work_id,
+	 	 phone_number,
+   		 workers,
+   		 task,
+   		 task_situation,
+   		 create_date,
+   		 update_date
+FROM temporary_work_tb 
+WHERE temporary_work_id=#{temporaryWorkId}
+</select>
+
+<!-- 分页查询临时工作-->
+<select id="browsePagingTemporaryWork" resultType="TemporaryWork">  
+    SELECT
+	     temporary_work_id,
+	 	 phone_number,
+   		 workers,
+   		 task,
+   		 task_situation,
+   		 create_date,
+   		 update_date
+	FROM temporary_work_tb
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+
+<!-- 统计记录条数 -->
+<select id="countAll"  resultType="int">  
+	SELECT
+	 	count(temporary_work_id)
+	FROM temporary_work_tb
+</select>   
+   
+ 
+</mapper>

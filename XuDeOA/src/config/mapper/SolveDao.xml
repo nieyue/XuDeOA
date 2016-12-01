@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.nieyue.dao.SolveDao">
+<!-- 添加解决 -->
+<insert id="addSolve" parameterType="Solve" flushCache="true"  >  
+   INSERT IGNORE INTO
+   		  solve_tb 
+   		 (method,
+   		 create_date,
+   		 is_adopt,
+   		 admin_id,
+   		 problem_id)
+   VALUES
+    	 (#{method},
+    	 #{createDate},
+    	 #{isAdopt},
+    	 #{adminId},
+    	 #{problemId})  
+</insert>  
+<!-- 更新解决 -->
+<update id="updateSolve" parameterType="Solve" >  
+    UPDATE 
+    	solve_tb 
+    SET 
+    	method=#{method},
+    	create_date=#{createDate},
+    	is_adopt=#{isAdopt},
+    	admin_id=#{adminId},
+    	problem_id=#{problemId}
+    WHERE
+    	 solve_id=#{solveId} 
+</update> 
+<!-- 删除解决-->
+<delete id="delSolve"  parameterType="Integer" >  
+    DELETE FROM
+    	 solve_tb 
+    	 WHERE solve_id=#{solveId}
+</delete>  
+<!-- 加载解决-->
+<select id="loadSolve" parameterType="Integer" resultType="Solve" >
+SELECT 
+		 solve_id,
+	 	 method,
+   		 create_date,
+   		 is_adopt,
+   		 admin_id,
+   		 problem_id
+FROM solve_tb 
+WHERE solve_id=#{solveId}
+</select>
+
+<!-- 分页查询解决-->
+<select id="browsePagingSolve" resultType="Solve">  
+    SELECT
+	     solve_id,
+	 	 method,
+   		 create_date,
+   		 is_adopt,
+   		 admin_id,
+   		 problem_id
+	FROM solve_tb
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+
+<!-- 统计记录条数 -->
+<select id="countAll"  resultType="int">  
+	SELECT
+	 	count(solve_id)
+	FROM solve_tb
+</select>   
+   
+ 
+</mapper>

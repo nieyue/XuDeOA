@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">  
+<mapper namespace="com.nieyue.dao.PhoneNumberDao">
+<!-- 添加手机号码 -->
+<insert id="addPhoneNumber" parameterType="PhoneNumber" flushCache="true"  >  
+   INSERT IGNORE INTO
+   		  phone_number_tb 
+   		 (
+   		 number,
+   		 operating_equipment,
+   		 robot_equipment,
+   		 ip_address,
+   		 wechat_number,
+   		 wechat_type,
+   		 wechat_password,
+   		 wechat_reg_date,
+   		 qq_number,
+   		 qq_type,
+   		 qq_password,
+   		 qq_reg_date,
+   		 momo_number,
+   		 momo_type,
+   		 momo_password,
+   		 momo_reg_date,
+   		 microblog_number,
+   		 microblog_type,
+   		 microblog_password,
+   		 microblog_reg_date,
+   		 create_date,
+   		 update_date,
+   		 remark)
+   VALUES
+    	 (
+    	 #{number},
+    	 #{operatingEquipment},
+    	 #{robotEquipment},
+    	 #{ipAddress},
+    	 #{wechatNumber},
+    	 #{wechatType},
+    	 #{wechatPassword},
+    	 #{wechatRegDate},
+    	 #{qqNumber},
+    	 #{qqType},
+    	 #{qqPassword},
+    	 #{qqRegDate},
+    	 #{momoNumber},
+    	 #{momoType},
+    	 #{momoPassword},
+    	 #{momoRegDate},
+    	 #{microblogNumber},
+    	 #{microblogType},
+    	 #{microblogPassword},
+    	 #{microblogRegDate},
+    	 #{createDate},
+    	 #{updateDate},
+    	 #{remark}
+    	 )  
+</insert>  
+<!-- 更新手机号码 -->
+<update id="updatePhoneNumber" parameterType="PhoneNumber" >  
+    UPDATE 
+    	phone_number_tb 
+    SET 
+    	number=#{number},
+    	operating_equipment=#{operatingEquipment},
+    	robot_equipment=#{robotEquipment},
+    	ip_address=#{ipAddress},
+    	wechat_number=#{wechatNumber},
+    	wechat_type=#{wechatType},
+    	wechat_password=#{wechatPassword},
+    	wechat_reg_date=#{wechatRegDate},
+    	qq_number=#{qqNumber},
+    	qq_type=#{qqType},
+    	qq_password=#{qqPassword},
+    	qq_reg_date=#{qqRegDate},
+    	momo_number=#{momoNumber},
+    	momo_type=#{momoType},
+    	momo_password=#{momoPassword},
+    	momo_reg_date=#{momoRegDate},
+    	microblog_number=#{microblogNumber},
+    	microblog_type=#{microblogType},
+    	microblog_password=#{microblogPassword},
+    	microblog_reg_date=#{microblogRegDate},
+    	create_date=#{createDate},
+    	update_date=#{updateDate},
+    	remark=#{remark}
+    WHERE
+    	 phone_number_id=#{phoneNumberId} 
+</update> 
+<!-- 删除手机号码-->
+<delete id="delPhoneNumber"  parameterType="Integer" >  
+    DELETE FROM
+    	 phone_number_tb 
+    	 WHERE phone_number_id=#{phoneNumberId}
+</delete>  
+<!-- 加载手机号码-->
+<select id="loadPhoneNumber" parameterType="Integer" resultType="PhoneNumber" >
+SELECT 
+		 phone_number_id,
+	 	 number,
+   		 operating_equipment,
+   		 robot_equipment,
+   		 ip_address,
+   		 wechat_number,
+   		 wechat_type,
+   		 wechat_password,
+   		 wechat_reg_date,
+   		 qq_number,
+   		 qq_type,
+   		 qq_password,
+   		 qq_reg_date,
+   		 momo_number,
+   		 momo_type,
+   		 momo_password,
+   		 momo_reg_date,
+   		 microblog_number,
+   		 microblog_type,
+   		 microblog_password,
+   		 microblog_reg_date,
+   		 create_date,
+   		 update_date,
+   		 remark
+FROM phone_number_tb 
+WHERE phone_number_id=#{phoneNumberId}
+</select>
+
+<!-- 分页查询手机号码-->
+<select id="browsePagingPhoneNumber" resultType="PhoneNumber">  
+    SELECT
+	     phone_number_id,
+	 	 number,
+   		 operating_equipment,
+   		 robot_equipment,
+   		 ip_address,
+   		 wechat_number,
+   		 wechat_type,
+   		 wechat_password,
+   		 wechat_reg_date,
+   		 qq_number,
+   		 qq_type,
+   		 qq_password,
+   		 qq_reg_date,
+   		 momo_number,
+   		 momo_type,
+   		 momo_password,
+   		 momo_reg_date,
+   		 microblog_number,
+   		 microblog_type,
+   		 microblog_password,
+   		 microblog_reg_date,
+   		 create_date,
+   		 update_date,
+   		 remark
+	FROM phone_number_tb
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+
+<!-- 统计记录条数 -->
+<select id="countAll"  resultType="int">  
+	SELECT
+	 	count(phone_number_id)
+	FROM phone_number_tb
+</select>   
+   
+ 
+</mapper>
