@@ -56,6 +56,21 @@ public class AdminController {
 		return StateResult.getSR(um);
 	}
 	/**
+	 * 修改密码
+	 * @return
+	 */
+	@RequestMapping(value = "/update/password", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody StateResult updatePasswordAdmin(@RequestParam(value="adminId")Integer adminId,@RequestParam(value="password")String password,@RequestParam(value="newpassword")String newpassword,HttpSession session)  {
+		boolean um=false;
+		Admin admin = adminService.loadAdmin(adminId);
+			if(!admin.getPassword().equals(password)){
+				return StateResult.getSR(um);
+			}
+			admin.setPassword(newpassword);
+			um = adminService.updateAdmin(admin);
+		return StateResult.getSR(um);
+	}
+	/**
 	 * 管理员增加
 	 * @return 
 	 */
@@ -100,9 +115,9 @@ public class AdminController {
 	public @ResponseBody Admin loginAdmin(@RequestParam(value="adminName")String adminName,@RequestParam(value="password")String password,HttpSession session)  {
 		Admin admin =new Admin();
 		admin= adminService.loginAdmin(adminName, password);
-		if(admin!=null){
-			session.setAttribute("admin", admin);
-		}
+//		if(admin!=null){
+//			session.setAttribute("admin", admin);
+//		}
 		return admin;
 	}
 	/**
@@ -113,16 +128,16 @@ public class AdminController {
 	public @ResponseBody void loginoutAdmin(HttpSession session)  {
 		session.invalidate();
 	}
-	/**
-	 *管理员状态
-	 * @return
-	 */
-	@RequestMapping(value = "/islogin", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody boolean isloginAdmin(HttpSession session)  {
-		if(session.getAttribute("admin")!=null){
-			return true;
-		}
-		return false;
-	}
+//	/**
+//	 *管理员状态
+//	 * @return
+//	 */
+//	@RequestMapping(value = "/islogin", method = {RequestMethod.GET,RequestMethod.POST})
+//	public @ResponseBody boolean isloginAdmin(HttpSession session)  {
+//		if(session.getAttribute("admin")!=null){
+//			return true;
+//		}
+//		return false;
+//	}
 	
 }
