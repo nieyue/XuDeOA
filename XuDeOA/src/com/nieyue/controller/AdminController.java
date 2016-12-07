@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.nieyue.bean.Admin;
 import com.nieyue.exception.StateResult;
 import com.nieyue.service.AdminService;
+import com.nieyue.token.TokenManager;
+import com.nieyue.token.TokenModel;
+import com.nieyue.util.MyDESutil;
 
 
 /**
@@ -29,6 +35,8 @@ import com.nieyue.service.AdminService;
 public class AdminController {
 	@Resource
 	private AdminService adminService;
+	@Autowired
+	private TokenManager tokenManager;
 	
 	/**
 	 * 管理员分页浏览
@@ -60,13 +68,17 @@ public class AdminController {
 	 * @return
 	 */
 	@RequestMapping(value = "/update/password", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody StateResult updatePasswordAdmin(@RequestParam(value="adminId")Integer adminId,@RequestParam(value="password")String password,@RequestParam(value="newpassword")String newpassword,HttpSession session)  {
+	public @ResponseBody StateResult updatePasswordAdmin(@RequestParam(value="password")String password,@RequestParam(value="newpassword")String newpassword,HttpSession session)  {
 		boolean um=false;
-		Admin admin = adminService.loadAdmin(adminId);
-			if(!admin.getPassword().equals(password)){
+		if(session.getAttribute("admin")==null){
+			return StateResult.getSR(um);
+		}
+		Admin admin = adminService.loadAdmin(((Admin) session.getAttribute("admin")).getAdminId());
+			if(!admin.getPassword().equals(MyDESutil.getMD5(password))){
 				return StateResult.getSR(um);
 			}
-			admin.setPassword(newpassword);
+			
+			admin.setPassword(MyDESutil.getMD5(newpassword));
 			um = adminService.updateAdmin(admin);
 		return StateResult.getSR(um);
 	}
@@ -76,6 +88,7 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/add", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResult addAdmin(@ModelAttribute Admin admin, HttpSession session) {
+		admin.setPassword( MyDESutil.getMD5(admin.getPassword()));
 		boolean am = adminService.addAdmin(admin);
 		return StateResult.getSR(am);
 	}
@@ -111,33 +124,48 @@ public class AdminController {
 	 *管理员登录
 	 * @return
 	 */
+	
 	@RequestMapping(value = "/login", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Admin loginAdmin(@RequestParam(value="adminName")String adminName,@RequestParam(value="password")String password,HttpSession session)  {
+	public @ResponseBody Admin loginAdmin(@RequestParam(value="adminName")String adminName,@RequestParam(value="password")String password,HttpServletRequest request,HttpServletResponse response)  {
 		Admin admin =new Admin();
-		admin= adminService.loginAdmin(adminName, password);
-//		if(admin!=null){
-//			session.setAttribute("admin", admin);
-//		}
+		String md5pwd = MyDESutil.getMD5(password);
+		admin= adminService.loginAdmin(adminName, md5pwd);
+		if(admin!=null){
+			 //生成一个token，保存用户登录状态
+	        // tokenManager.createToken("XuDeOAadmin",admin.getAdminId(),request,response);
+			request.getSession().setAttribute("admin", admin);
+		}
 		return admin;
 	}
+
 	/**
 	 *管理员登出
 	 * @return
 	 */
 	@RequestMapping(value = "/loginout", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody void loginoutAdmin(HttpSession session)  {
-		session.invalidate();
+	public @ResponseBody void loginoutAdmin(HttpServletRequest request,HttpServletResponse response)  {
+		 //tokenManager.deleteToken("XuDeOAadmin",request,response);
+		request.getSession().invalidate();
 	}
-//	/**
-//	 *管理员状态
-//	 * @return
-//	 */
-//	@RequestMapping(value = "/islogin", method = {RequestMethod.GET,RequestMethod.POST})
-//	public @ResponseBody boolean isloginAdmin(HttpSession session)  {
-//		if(session.getAttribute("admin")!=null){
-//			return true;
-//		}
-//		return false;
-//	}
+	/**
+	 *管理员状态
+	 * @return
+	 */
+	@RequestMapping(value = "/islogin", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody boolean isloginAdmin(HttpServletRequest request,HttpServletResponse response)  {
+		//if(tokenManager.checkToken("XuDeOAadmin", tokenManager.getToken("XuDeOAadmin", request), request,response)){
+			if(request.getSession().getAttribute("admin")!=null){
+			return true;
+		}
+		return false;
+	}
+	/**
+	 *获取token
+	 * @return
+	 */
+	@RequestMapping(value = "/token", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody TokenModel tokenAdmin(HttpServletRequest request,HttpServletResponse response)  {
+		return tokenManager.getToken("XuDeOAadmin", request);
+	}
 	
 }

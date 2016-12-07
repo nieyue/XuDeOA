@@ -16,16 +16,27 @@
       <table>
         <tr>
           <td>Login:</td>
-          <td><input type="text" name="login" id="login"></td>
+          <td><input type="text" name="adminName" id="adminName"></td>
         </tr>
         <tr>
           <td>Password:</td>
           <td><input type="password" name="password" id="password"></td>
         </tr> 
         <tr>
-          <td colspan="2"><input type="submit"></td>
+          <td colspan="2"><input type="button" id="formSubmit"></td>
         </tr>
       </table>
     </form>
+    <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
+    <script>
+    $(function(){
+    	$("#formSubmit").on("click",function(){
+    		
+    	$.get("/admin/login?adminName="+$("#adminName").val()+"&password="+$("#password").val(),function(){
+    		location.replace("http://localhost:3000")
+    	});
+    	});
+    });
+    </script>
   </body>
 </html>

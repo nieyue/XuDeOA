@@ -80,7 +80,9 @@ public class PhoneControllerTest {
 	}
 	@Test
 	public void testLoadMer() throws Exception {
-		String url="/mer/1026";
+		//String url="/mer/1026";
+		String url="/admin/login?adminName=15111336587&password=123123";
+		//String url="/admin/1000";
 		this.mvc.perform(get(url))
 		//.andExpect(status().isOk())
 		.andDo(print());

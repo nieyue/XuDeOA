@@ -34,7 +34,8 @@ public class JspFilter implements Filter{
         HttpServletRequest servletRequest = (HttpServletRequest) request;
         HttpServletResponse servletResponse = (HttpServletResponse) response;
         //实现跨域
-        servletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        servletResponse.setHeader("Access-Control-Allow-Credentials", "true");
+        servletResponse.setHeader("Access-Control-Allow-Origin", servletRequest.getHeader("Origin"));
         servletResponse.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         servletResponse.setHeader("Access-Control-Max-Age", "3600");
         servletResponse.setHeader("Access-Control-Allow-Headers", "x-requested-with");

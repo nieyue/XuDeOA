@@ -158,3 +158,24 @@ retain_number int(11) COMMENT '当天留存人数',
 update_date datetime COMMENT '日期',
 PRIMARY KEY (day_plus_id)
 )ENGINE = InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='日加人数表';
+
+#设置初始角色
+INSERT IGNORE INTO role_tb (name,duty,update_date) 
+VALUES ("普通员工","普通员工",now());  
+INSERT IGNORE INTO role_tb (name,duty,update_date) 
+VALUES ("主管","初级管理",now());  
+INSERT IGNORE INTO role_tb (name,duty,update_date) 
+VALUES ("超级管理员","超级管理员",now());
+
+#设置初始权限
+INSERT IGNORE INTO role_tb (name,addtion,deletion,updation,queries,update_date,role_id) 
+VALUES ("全部","1","1","1","1",now(),"1002");
+INSERT IGNORE INTO role_tb (name,addtion,deletion,updation,queries,update_date,role_id) 
+VALUES ("全部","1","0","0","1",now(),"1000");
+
+#设置初始管理员密码MD5加密123456
+INSERT IGNORE INTO admin_tb (name,cell_phone,email,password,create_date,last_login_date,role_id) 
+VALUES ("聂跃","15111336587","278076304@qq.com","11874bb6149dd45428da628c9766b252",now(),now(),"1002");  
+
+
+

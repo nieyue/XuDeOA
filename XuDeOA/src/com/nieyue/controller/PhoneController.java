@@ -102,7 +102,7 @@ public class PhoneController {
 	 * @return
 	 */
 	@RequestMapping(value = "/mac/{mac}", method = {RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody Phone loadMerByMac(@PathVariable("mac") String mac,HttpSession session)  {
+	public @ResponseBody Phone loadPhoneByMac(@PathVariable("mac") String mac,HttpSession session)  {
 		Phone phone=new Phone();
 		phone = phoneService.loadPhoneByMac(mac);
 		return phone;
