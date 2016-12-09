@@ -18,8 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nieyue.bean.Admin;
+import com.nieyue.bean.Role;
 import com.nieyue.exception.StateResult;
 import com.nieyue.service.AdminService;
+import com.nieyue.service.JurisdictionService;
+import com.nieyue.service.RoleService;
 import com.nieyue.token.TokenManager;
 import com.nieyue.token.TokenModel;
 import com.nieyue.util.MyDESutil;
@@ -37,6 +40,10 @@ public class AdminController {
 	private AdminService adminService;
 	@Autowired
 	private TokenManager tokenManager;
+	@Autowired
+	private RoleService roleService;
+	@Autowired
+	private JurisdictionService jurisdictionService;
 	
 	/**
 	 * 管理员分页浏览
@@ -53,6 +60,16 @@ public class AdminController {
 			List<Admin> list = new ArrayList<Admin>();
 			list= adminService.browsePagingAdmin(pageNum, pageSize, orderName, orderWay);
 			return list;
+	}
+	/**
+	 * 管理管理员修改
+	 * @return
+	 */
+	@RequestMapping(value = "/update/all", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody StateResult updateAdminAll(@ModelAttribute Admin admin,HttpSession session)  {
+		admin.setPassword(MyDESutil.getMD5(admin.getPassword()));
+		boolean um = adminService.updateAdmin(admin);
+		return StateResult.getSR(um);
 	}
 	/**
 	 * 管理员修改
@@ -134,6 +151,9 @@ public class AdminController {
 			 //生成一个token，保存用户登录状态
 	        // tokenManager.createToken("XuDeOAadmin",admin.getAdminId(),request,response);
 			request.getSession().setAttribute("admin", admin);
+			Role role = roleService.loadRole(admin.getRoleId());
+			request.getSession().setAttribute("role", role);
+			
 		}
 		return admin;
 	}
