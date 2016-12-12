@@ -69,5 +69,17 @@ public class AdminServiceImpl implements AdminService{
 		return a;
 	}
 
+	@Override
+	public List<String> browseAllAdminPhone() {
+		List<String> l = adminDao.browseAllAdminPhone();
+		return l;
+	}
+
+	@Override
+	public List<String> browseAllAdminEmail() {
+		List<String> l = adminDao.browseAllAdminEmail();
+		return l;
+	}
+
 	
 }

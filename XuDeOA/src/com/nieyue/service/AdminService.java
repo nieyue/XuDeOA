@@ -24,4 +24,8 @@ public interface AdminService {
 	public int countAll();	
 	/** 管理员 分页信息 */
 	public List<Admin> browsePagingAdmin(int pageNum,int pageSize,String orderName,String orderWay);		
+	/** 所有登录手机号 */	
+	public List<String> browseAllAdminPhone();	
+	/** 所有登录邮箱 */	
+	public List<String> browseAllAdminEmail();	
 }

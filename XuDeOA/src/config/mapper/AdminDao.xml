@@ -75,6 +75,18 @@ WHERE
 AND password=#{password}
 </select>
 
+<!--所有登录手机号-->
+<select id="browseAllAdminPhone" resultType="String">  
+    SELECT
+   		 cell_phone
+	FROM admin_tb
+</select> 
+<!-- 所有登录email-->
+<select id="browseAllAdminEmail" resultType="String">  
+   SELECT
+   		 email
+	FROM admin_tb
+</select> 
 <!-- 分页查询管理员-->
 <select id="browsePagingAdmin" resultType="Admin">  
     SELECT

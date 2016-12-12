@@ -40,7 +40,7 @@ public class TemporaryWorkController {
 	public @ResponseBody List<TemporaryWork> browsePagingTemporaryWork(
 			@RequestParam(value="pageNum",defaultValue="1",required=false)int pageNum,
 			@RequestParam(value="pageSize",defaultValue="10",required=false) int pageSize,
-			@RequestParam(value="orderName",required=false,defaultValue="temporaryWork_id") String orderName,
+			@RequestParam(value="orderName",required=false,defaultValue="temporary_work_id") String orderName,
 			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay,HttpSession session)  {
 			List<TemporaryWork> list = new ArrayList<TemporaryWork>();
 			list= temporaryWorkService.browsePagingTemporaryWork(pageNum, pageSize, orderName, orderWay);

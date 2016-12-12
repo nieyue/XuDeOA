@@ -40,7 +40,7 @@ public class DayPlusController {
 	public @ResponseBody List<DayPlus> browsePagingDayPlus(
 			@RequestParam(value="pageNum",defaultValue="1",required=false)int pageNum,
 			@RequestParam(value="pageSize",defaultValue="10",required=false) int pageSize,
-			@RequestParam(value="orderName",required=false,defaultValue="dayPlus_id") String orderName,
+			@RequestParam(value="orderName",required=false,defaultValue="day_plus_id") String orderName,
 			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay,HttpSession session)  {
 			List<DayPlus> list = new ArrayList<DayPlus>();
 			list= dayPlusService.browsePagingDayPlus(pageNum, pageSize, orderName, orderWay);

@@ -67,6 +67,24 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/update/all", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResult updateAdminAll(@ModelAttribute Admin admin,HttpSession session)  {
+		//不能添加相同的手机号或者邮箱
+		List<String> lp = adminService.browseAllAdminPhone();
+		List<String> le = adminService.browseAllAdminEmail();
+		Admin oa = adminService.loadAdmin(admin.getAdminId());//自身原来的
+		if(!oa.getCellPhone().equals(admin.getCellPhone())){
+		for (int i = 0; i < lp.size(); i++) {
+			if(lp.get(i).equals(admin.getCellPhone())){
+				return StateResult.getSlefSR(40002, "手机号已经存在");
+			}
+		}
+		}
+		if(!oa.getEmail().equals(admin.getEmail())){
+		for (int i = 0; i < le.size(); i++) {
+			if(le.get(i).equals(admin.getEmail())){
+				return StateResult.getSlefSR(40002, "email已经存在");
+			}
+		}
+		}
 		admin.setPassword(MyDESutil.getMD5(admin.getPassword()));
 		boolean um = adminService.updateAdmin(admin);
 		return StateResult.getSR(um);
@@ -77,6 +95,25 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/update", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResult updateAdmin(@ModelAttribute Admin admin,HttpSession session)  {
+		//不能添加相同的手机号或者邮箱
+		List<String> lp = adminService.browseAllAdminPhone();
+		List<String> le = adminService.browseAllAdminEmail();
+		Admin oa = adminService.loadAdmin(admin.getAdminId());//自身原来的
+		//如果修改的不等于原来的，才验证
+		if(!oa.getCellPhone().equals(admin.getCellPhone())){
+			for (int i = 0; i < lp.size(); i++) {
+				if(lp.get(i).equals(admin.getCellPhone())){
+					return StateResult.getSlefSR(40002, "手机号已经存在");
+				}
+			}
+		}
+		if(!oa.getEmail().equals(admin.getEmail())){
+		for (int i = 0; i < le.size(); i++) {
+			if(le.get(i).equals(admin.getEmail())){
+				return StateResult.getSlefSR(40002, "email已经存在");
+			}
+		}
+		}
 		boolean um = adminService.updateAdmin(admin);
 		return StateResult.getSR(um);
 	}
@@ -105,6 +142,19 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/add", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody StateResult addAdmin(@ModelAttribute Admin admin, HttpSession session) {
+		//不能添加相同的手机号或者邮箱
+		List<String> lp = adminService.browseAllAdminPhone();
+		List<String> le = adminService.browseAllAdminEmail();
+		for (int i = 0; i < lp.size(); i++) {
+			if(lp.get(i).equals(admin.getCellPhone())){
+				return StateResult.getSlefSR(40002, "手机号已经存在");
+			}
+		}
+		for (int i = 0; i < le.size(); i++) {
+			if(le.get(i).equals(admin.getEmail())){
+				return StateResult.getSlefSR(40002, "email已经存在");
+			}
+		}
 		admin.setPassword( MyDESutil.getMD5(admin.getPassword()));
 		boolean am = adminService.addAdmin(admin);
 		return StateResult.getSR(am);
