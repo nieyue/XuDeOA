@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.nieyue.bean.Task;
 import com.nieyue.exception.StateResult;
+import com.nieyue.po.DaysTask;
+import com.nieyue.po.MonthsTask;
+import com.nieyue.po.WeeksTask;
 import com.nieyue.service.TaskService;
 
 
@@ -45,6 +48,57 @@ public class TaskController {
 			List<Task> list = new ArrayList<Task>();
 			list= taskService.browsePagingTask(pageNum, pageSize, orderName, orderWay);
 			return list;
+	}
+	/**
+	 * 当日每日工作分页浏览
+	 * @param orderName 商品排序数据库字段
+	 * @param orderWay 商品排序方法 asc升序 desc降序
+	 * @return
+	 */
+	@RequestMapping(value = "/list/days", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody List<DaysTask> browseDaysPagingTaskByName(
+			@RequestParam(value="name",defaultValue="手机",required=false)String name,
+			@RequestParam(value="pageNum",defaultValue="1",required=false)int pageNum,
+			@RequestParam(value="pageSize",defaultValue="10",required=false) int pageSize,
+			@RequestParam(value="orderName",required=false,defaultValue="days_date") String orderName,
+			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay,HttpSession session)  {
+		List<DaysTask> list = new ArrayList<DaysTask>();
+		list= taskService.browseDaysPagingTaskByName(name, pageNum, pageSize, orderName, orderWay);
+		return list;
+	}
+	/**
+	 * 当周每日工作分页浏览
+	 * @param orderName 商品排序数据库字段
+	 * @param orderWay 商品排序方法 asc升序 desc降序
+	 * @return
+	 */
+	@RequestMapping(value = "/list/weeks", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody List<WeeksTask> browseWeeksPagingTaskByName(
+			@RequestParam(value="name",defaultValue="手机",required=false)String name,
+			@RequestParam(value="pageNum",defaultValue="1",required=false)int pageNum,
+			@RequestParam(value="pageSize",defaultValue="10",required=false) int pageSize,
+			@RequestParam(value="orderName",required=false,defaultValue="weeks_date") String orderName,
+			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay,HttpSession session)  {
+		List<WeeksTask> list = new ArrayList<WeeksTask>();
+		list= taskService.browseWeeksPagingTaskByName(name, pageNum, pageSize, orderName, orderWay);
+		return list;
+	}
+	/**
+	 * 当月每日工作分页浏览
+	 * @param orderName 商品排序数据库字段
+	 * @param orderWay 商品排序方法 asc升序 desc降序
+	 * @return
+	 */
+	@RequestMapping(value = "/list/months", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody List<MonthsTask> browseMonthsPagingTaskByName(
+			@RequestParam(value="name",defaultValue="手机",required=false)String name,
+			@RequestParam(value="pageNum",defaultValue="1",required=false)int pageNum,
+			@RequestParam(value="pageSize",defaultValue="10",required=false) int pageSize,
+			@RequestParam(value="orderName",required=false,defaultValue="months_date") String orderName,
+			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay,HttpSession session)  {
+		List<MonthsTask> list = new ArrayList<MonthsTask>();
+		list= taskService.browseMonthsPagingTaskByName(name, pageNum, pageSize, orderName, orderWay);
+		return list;
 	}
 	/**
 	 * 每日工作修改
@@ -80,6 +134,15 @@ public class TaskController {
 	@RequestMapping(value = "/count", method = {RequestMethod.GET,RequestMethod.POST})
 	public @ResponseBody int countAll(HttpSession session)  {
 		int count = taskService.countAll();
+		return count;
+	}
+	/**
+	 * 根据名称每日工作浏览数量
+	 * @return
+	 */
+	@RequestMapping(value = "/count/{{name}}", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody int countAllByName(@PathVariable("name")String name,HttpSession session)  {
+		int count = taskService.countAllByName(name);
 		return count;
 	}
 	/**

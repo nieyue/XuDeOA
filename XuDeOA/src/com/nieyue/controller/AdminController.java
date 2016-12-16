@@ -62,6 +62,20 @@ public class AdminController {
 			return list;
 	}
 	/**
+	 * 管理员全部查询
+	 * @param orderName 商品排序数据库字段
+	 * @param orderWay 商品排序方法 asc升序 desc降序
+	 * @return
+	 */
+	@RequestMapping(value = "/list/all", method = {RequestMethod.GET,RequestMethod.POST})
+	public @ResponseBody List<Admin> browseAllAdmin(
+			@RequestParam(value="orderName",required=false,defaultValue="admin_id") String orderName,
+			@RequestParam(value="orderWay",required=false,defaultValue="desc") String orderWay,HttpSession session)  {
+		List<Admin> list = new ArrayList<Admin>();
+		list= adminService.browseAllAdmin( orderName, orderWay);
+		return list;
+	}
+	/**
 	 * 管理管理员修改
 	 * @return
 	 */

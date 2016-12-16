@@ -104,6 +104,21 @@ AND password=#{password}
 	LIMIT
 		#{pageNum},#{pageSize}
 </select> 
+<!-- 查询全部管理员-->
+<select id="browseAllAdmin" resultType="Admin">  
+    SELECT
+	     admin_id,
+	 	 name,
+   		 cell_phone,
+   		 email,
+   		 password,
+   		 create_date,
+   		 last_login_date,
+   		 role_id
+	FROM admin_tb
+	ORDER BY
+		${orderName}  ${orderWay}
+</select> 
 
 <!-- 统计记录条数 -->
 <select id="countAll"  resultType="int">  

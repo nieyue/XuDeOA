@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.nieyue.bean.Task;
 import com.nieyue.dao.TaskDao;
+import com.nieyue.po.DaysTask;
+import com.nieyue.po.MonthsTask;
+import com.nieyue.po.WeeksTask;
 import com.nieyue.service.TaskService;
 @Service("TaskService")
 public class TaskServiceImpl implements TaskService{
@@ -58,6 +61,64 @@ public class TaskServiceImpl implements TaskService{
 			pageSize=0;//没有数据
 		}
 		List<Task> l = taskDao.browsePagingTask(pageNum-1, pageSize, orderName, orderWay);
+		return l;
+	}
+
+	@Override
+	public int countAllByName(String name) {
+		int c = taskDao.countAllByName(name);
+		return c;
+	}
+
+	@Override
+	public List<Task> browsePagingTaskByName(String name, int pageNum,
+			int pageSize, String orderName, String orderWay) {
+		if(pageNum<1){
+			pageNum=1;
+		}
+		if(pageSize<1){
+			pageSize=0;//没有数据
+		}
+		List<Task> l = taskDao.browsePagingTaskByName(name, pageNum-1, pageSize, orderName, orderWay);
+		return l;
+	}
+
+	@Override
+	public List<DaysTask> browseDaysPagingTaskByName(String name, int pageNum,
+			int pageSize, String orderName, String orderWay) {
+		if(pageNum<1){
+			pageNum=1;
+		}
+		if(pageSize<1){
+			pageSize=0;//没有数据
+		}
+		List<DaysTask> l = taskDao.browseDaysPagingTaskByName(name, pageNum-1, pageSize, orderName, orderWay);
+		return l;
+	}
+
+	@Override
+	public List<WeeksTask> browseWeeksPagingTaskByName(String name, int pageNum,
+			int pageSize, String orderName, String orderWay) {
+		if(pageNum<1){
+			pageNum=1;
+		}
+		if(pageSize<1){
+			pageSize=0;//没有数据
+		}
+		List<WeeksTask> l = taskDao.browseWeeksPagingTaskByName(name, pageNum-1, pageSize, orderName, orderWay);
+		return l;
+	}
+
+	@Override
+	public List<MonthsTask> browseMonthsPagingTaskByName(String name, int pageNum,
+			int pageSize, String orderName, String orderWay) {
+		if(pageNum<1){
+			pageNum=1;
+		}
+		if(pageSize<1){
+			pageSize=0;//没有数据
+		}
+		List<MonthsTask> l = taskDao.browseMonthsPagingTaskByName(name, pageNum-1, pageSize, orderName, orderWay);
 		return l;
 	}
 

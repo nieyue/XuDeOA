@@ -111,12 +111,91 @@ WHERE task_id=#{taskId}
 	LIMIT
 		#{pageNum},#{pageSize}
 </select> 
+<!-- 指定名称的分页每日工作信息-->
+<select id="browsePagingTaskByName" resultType="Task">  
+    SELECT
+	     task_id,
+	 	 name,
+   		 number,
+   		 create_date,
+   		 update_date,
+   		 base_number,
+   		 am_number,
+   		 am_total_number,
+   		 pm_number,
+   		 pm_total_number,
+   		 night_number,
+   		 night_total_number,
+   		 day_total_number,
+   		 day_retain_number,
+   		 admin_id
+	FROM task_tb
+	WHERE name=#{name}
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
 
-<!-- 统计记录条数 -->
+<!-- 指定名称的当日分页每日工作信息-->
+<select id="browseDaysPagingTaskByName" resultType="com.nieyue.po.DaysTask">  
+    SELECT
+	 	 name,
+   		 sum(day_total_number) days_total_number,
+   		 sum(day_retain_number) days_retain_number,
+   		 DATE_FORMAT(create_date,'%Y-%m-%d' ) days_date
+	FROM task_tb
+	WHERE name=#{name}
+	GROUP BY days_date
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+<!-- 指定名称的当周分页每日工作信息-->
+<select id="browseWeeksPagingTaskByName" resultType="com.nieyue.po.WeeksTask">  
+    SELECT
+	 	 name,
+   		 sum(day_total_number) weeks_total_number,
+   		 sum(day_retain_number) weeks_retain_number,
+   		 DATE_FORMAT(create_date,'%Y-%u' ) weeks_date
+	FROM task_tb
+	WHERE name=#{name}
+	GROUP BY weeks_date
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+
+<!-- 指定名称的当月分页每日工作信息-->
+<select id="browseMonthsPagingTaskByName" resultType="com.nieyue.po.MonthsTask">  
+    SELECT
+	 	 name,
+   		 sum(day_total_number) months_total_number,
+   		 sum(day_retain_number) months_retain_number,
+   		 DATE_FORMAT(create_date,'%Y-%u' ) months_date
+	FROM task_tb
+	WHERE name=#{name}
+	GROUP BY months_date
+	ORDER BY
+		${orderName}  ${orderWay}
+	LIMIT
+		#{pageNum},#{pageSize}
+</select> 
+
+<!--  每日工作总共数目 -->
 <select id="countAll"  resultType="int">  
 	SELECT
 	 	count(task_id)
 	FROM task_tb
+</select>   
+<!-- 指定名称的每日工作总共数目 -->
+<select id="countAllByName"  resultType="int">  
+	SELECT
+	 	count(task_id)
+	FROM task_tb
+	WHERE name=#{name}
 </select>   
    
  

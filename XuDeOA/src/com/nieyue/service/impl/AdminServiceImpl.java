@@ -81,5 +81,11 @@ public class AdminServiceImpl implements AdminService{
 		return l;
 	}
 
+	@Override
+	public List<Admin> browseAllAdmin(String orderName, String orderWay) {
+			List<Admin> l = adminDao.browseAllAdmin(orderName, orderWay);
+			return l;
+	}
+
 	
 }

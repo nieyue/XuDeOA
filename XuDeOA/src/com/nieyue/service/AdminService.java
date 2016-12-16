@@ -2,6 +2,8 @@ package com.nieyue.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.nieyue.bean.Admin;
 
 /**
@@ -28,4 +30,6 @@ public interface AdminService {
 	public List<String> browseAllAdminPhone();	
 	/** 所有登录邮箱 */	
 	public List<String> browseAllAdminEmail();	
+	/** 管理员 全部信息 */
+	public List<Admin> browseAllAdmin(@Param("orderName")String orderName,@Param("orderWay")String orderWay) ;		
 }

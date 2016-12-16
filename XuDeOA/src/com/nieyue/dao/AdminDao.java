@@ -30,4 +30,6 @@ public interface AdminDao {
 	public List<String> browseAllAdminEmail();	
 	/** 管理员 分页信息 */
 	public List<Admin> browsePagingAdmin(@Param("pageNum")int pageNum,@Param("pageSize")int pageSize,@Param("orderName")String orderName,@Param("orderWay")String orderWay) ;		
+	/** 管理员 全部信息 */
+	public List<Admin> browseAllAdmin(@Param("orderName")String orderName,@Param("orderWay")String orderWay) ;		
 }
